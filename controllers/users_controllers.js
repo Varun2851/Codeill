@@ -1,31 +1,36 @@
 const User = require('../models/user');
 
-module.exports.profile = function(req,res){
+// module.exports.profile = function(req,res){
     
-    if(req.cookies.user_id){
+//     if(req.cookies.user_id){
         
-        User.findById(req.cookies.user_id)
-        .then(user => {
-            if(user){
-                return res.render('profile',{
-                    title : "User Profile",
-                    user : user
-                });
-            }
-            //console.log("OK")
-            return res.redirect('/users/sign-in');
-        })
-        .catch(err => {
-            // Handle the error here
-            console.log('error',err);
-            return res.redirect('back');
+//         User.findById(req.cookies.user_id)
+//         .then(user => {
+//             if(user){
+//                 return res.render('profile',{
+//                     title : "User Profile",
+//                     user : user
+//                 });
+//             }
+//             //console.log("OK")
+//             return res.redirect('/users/sign-in');
+//         })
+//         .catch(err => {
+//             // Handle the error here
+//             console.log('error',err);
+//             return res.redirect('back');
             
-        });
+//         });
 
-    }
-    else{
-        return res.redirect('/users/sign-in');
-    }
+//     }
+//     else{
+//         return res.redirect('/users/sign-in');
+//     }
+// }
+module.exports.profile = function(req, res){
+    return res.render('user_profile', {
+        title: 'User Profile'
+    })
 }
 //render the Sign Up page
 module.exports.signUp = function(req,res){
@@ -66,35 +71,40 @@ module.exports.create = function(req,res){
 
 };
 //sign in and crete a session 
-module.exports.createSession = function(req, res){
+// module.exports.createSession = function(req, res){
 
-    // steps to authenticate
-    // find the user
-    User.findOne({email: req.body.email}).exec()
-        //if(err){console.log('error in finding user in signing in'); return}
-        // handle user found
-        .then(function(user){
-            if (user){
+//     // steps to authenticate
+//     // find the user
+//     User.findOne({email: req.body.email}).exec()
+//         //if(err){console.log('error in finding user in signing in'); return}
+//         // handle user found
+//         .then(function(user){
+//             if (user){
 
-            // handle password which doesn't match
-                if (user.password != req.body.password){
-                //console.log("Shivi");
-                return res.redirect('/users/sign-up');
-                }
+//             // handle password which doesn't match
+//                 if (user.password != req.body.password){
+//                 //console.log("Shivi");
+//                 return res.redirect('/users/sign-up');
+//                 }
 
-            // handle session creation
-                res.cookie('user_id', user.id);
-                return res.redirect('/users/profile');
+//             // handle session creation
+//                 res.cookie('user_id', user.id);
+//                 return res.redirect('/users/profile');
 
-            }   
-            else{
-            // handle user not found
-            return res.redirect('back');
-            }
-        })
-        .catch(function(err){
-            console.log('error in finding user in signing in',err);
-            return res.redirect('back');
-        })
+//             }   
+//             else{
+//             // handle user not found
+//             return res.redirect('back');
+//             }
+//         })
+//         .catch(function(err){
+//             console.log('error in finding user in signing in',err);
+//             return res.redirect('back');
+//         })
             
-};
+// };
+
+//sign in and crete a session through passport.js
+module.exports.createSession = function(req,res){
+    return res.redirect('/');
+}
