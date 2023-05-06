@@ -11,6 +11,11 @@ const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
 
+const MongoStore = require('connect-mongo')(session);
+//installed connect-mongo , because every time the server
+//restart, session cookie gets reset,so by using this we can store the session cookie of authenticated user in our data base.
+
+
 
 app.use(express.urlencoded());
 
@@ -35,7 +40,13 @@ app.use(session({
     resave : false,
     cookie :{
         maxAge : (10000*60*100),
+    },
+   store : new MongoStore(
+    {
+        mongooseConnection:db,
+        autoRemove:'disabled'
     }
+   ) 
 }));
 
 app.use(passport.initialize());
