@@ -117,8 +117,6 @@ passport.serializeUser(function(user,done){
 
 
 passport.deserializeUser((id, done) => {
-    console.log(id);
-    console.log("etah");
     User.findById(id)
       .then((user) => {
         done(null, user);

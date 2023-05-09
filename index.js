@@ -15,7 +15,17 @@ const MongoStore = require('connect-mongo')(session);
 //installed connect-mongo , because every time the server
 //restart, session cookie gets reset,so by using this we can store the session cookie of authenticated user in our data base.
 
+//npm install connect-mongo@3 , instead of npm install connect-mongo
 
+const sassMiddleware = require('node-sass-middleware');
+
+app.use(sassMiddleware({
+    src:'/assets/scss',
+    dest:'/assets/css',
+    debug:true,
+    outputStyle: 'extended',
+    prefix:'/css '
+}));
 
 app.use(express.urlencoded());
 
