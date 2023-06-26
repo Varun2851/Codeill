@@ -7,6 +7,7 @@
 // }
 
 const Post = require('../models/post');
+const Comment = require('../models/comment');
 
 module.exports.create = function(req,res){
     Post.create({
@@ -21,3 +22,64 @@ module.exports.create = function(req,res){
         });
       
 }
+
+// module.exports.destroy = function(req,res){
+//   Post.findById(req.params.id,function(err,post){
+//     //.id means converting the object id into string
+//     if(post.user == req.user.id){
+//       post.remove();
+//       Comment.deleteMany({post : req.params.id},function(err){
+//         return res.redirect('back');
+//       });
+       
+  
+//     }else{
+//       return res.redirect('back');
+//     }
+//   });
+// }
+
+
+// module.exports.destroy = function(req, res) {
+//   Post.findById(req.params.id)
+//     .then(function(post) {
+//       if (post.user == req.user.id) {
+//         return post.remove()
+//         .then(function() {
+//           return Comment.deleteMany({ post: req.params.id });
+//         });
+//       } else {
+//         throw new Error('Unauthorized');
+//       }
+//     })
+//     .then(function() {
+//       return res.redirect('back');
+//     })
+//     .catch(function(err) {
+//       console.error(err);
+//       return res.redirect('back');
+//     });
+// };
+
+
+module.exports.destroy = function(req, res) {
+  Post.findById(req.params.id)
+    .then(function(post) {
+      if (post.user == req.user.id) {
+        return post.deleteOne().then(function() {
+          return Comment.deleteMany({ post: req.params.id });
+        });
+      } else {
+        throw new Error('Unauthorized');
+      }
+    })
+    .then(function() {
+      return res.redirect('back');
+    })
+    .catch(function(err) {
+      console.error(err);
+      return res.redirect('back');
+    });
+};
+
+
